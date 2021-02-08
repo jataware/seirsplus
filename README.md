@@ -1,0 +1,2 @@
+# seirsplus
+SEIRS epidemiological model
