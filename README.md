@@ -34,16 +34,24 @@ Model assessment: model predictions for January are compared to the actual data 
 Results
 Below, Figures 1 and 2 are time series plots of COVID cases and fatalities, respectively, for December, 2020 based on information known on 30 November. Figures 3 and 4 are predictions for January 2021 based on input parameters tuned from December and actual cases and fatalities on 31 December 2020.
 
+<center>
+<img src="images/1_OR_train.png" width="700">
+</center>
+Figure 1: Backcast COVID Cases for December 2020.
 
-Figure 1: Backcast COVID Cases for December 2020. MSEcases = 76.2 cases
-
-
+<center>
+<img src="images/2_OR_train.png" width="700">
+</center>
 Figure 2: Backcast COVID Fatalities for December 2020. MSEfatalities = 7.5 fatalities
 
-
+<center>
+<img src="images/3_OR_pred.png" width="700">
+</center>
 Figure 3: Forecast COVID Cases for January 2021 (MSEcases = 146.2 cases)
 
-
+<center>
+<img src="images/4_OR_pred.png" width="700">
+</center>
 Figure 4: Forecast COVID Fatalities for January 2021. MSEfatalities = 5.8 fatalities.
 
 
@@ -59,18 +67,6 @@ Number of fatalities, initF: Common metric and widely available, but as above, c
 Reproduction Number, Ro: Common metric and widely available, but with a significant degree of uncertainty and model sensitivity. Through experimentation with E-SEIRS+, there is an inflection point between 1.4 to 1.5 where Ro=1.5 provides a reasonable estimate of total number of cases, but Ro= 1.4 leads to overly optimistic results where predicted cases quickly and significantly diverge from actual cases. This sensitivity highlights the need for an analyst to explore historical model runs prior to making a true prediction.
 
 Fatality rate, mu_o: Less straightforward to find and may require transformation. For Oregon we converted what we could find (5-5.9 deaths per 1 million people) to a daily death rate. In general, the model appears to be stable and reasonable for a wide range of fatality rates.  For the short simulations of one month, despite our parameter tuning for December, it did not appear that we over-fit the training set and the January test set results were acceptable.
-
-
-
-
-
-
-
-
-
-
-
-
 
 ### Citation
 1. SEIRS Model Description at https://github.com/ryansmcgee/seirsplus/wiki/SEIRS-Model-Description under the MIT License.
