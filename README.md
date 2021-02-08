@@ -107,7 +107,9 @@ Fatality rate, mu_o: Less straightforward to find and may require transformation
 3. https://covidactnow.org/us/oregon-or/?s=1578518
 
 4. https://www.nature.com/articles/d41586-021-00071-6
-5. http://www.healthdata.org/sites/default/files/files/Projects/7. COVID/briefing_Oregon_20201223.pdf
+
+5. http://www.healthdata.org/sites/default/files/files/Projects/COVID/briefing_Oregon_20201223.pdf
+
 6. https://www.oregon.gov/oha/PH/BIRTHDEATHCERTIFICATES/VITALSTATISTICS/DEATH/Documents/dmon19.pdf
 
 7. https://www.oregon.gov/oha/PH/BIRTHDEATHCERTIFICATES/VITALSTATISTICS/ANNUALREPORTS/Pages/index.aspx
