@@ -1,5 +1,5 @@
-## Enhanced SEIRS+ 
-# E-SEIRS+: A Generalized Infectious Disease Model
+# Enhanced SEIRS+ 
+## E-SEIRS+: A Generalized Infectious Disease Model
 
 
 ### Objective
