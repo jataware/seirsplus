@@ -1,6 +1,4 @@
 from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
 from sqlalchemy import create_engine
 from datetime import timedelta
 import datetime as dt
@@ -156,15 +154,3 @@ def fatalitiesMSE(df):
     testF = df['actualFatalities']
     predF = df['predictedFatalities']
     return mean_squared_error(testF, predF)
-
-
-#typePlot = "Fatalities" or "Cases"
-def plot_it(headers, df, geo, typePlot, startDate, endDate, ylim):
-    df.plot(kind='line',x='timestamp',y=headers,
-            title = f'Predicted vs Actual {typePlot}\nGeo: {geo} from {startDate} to {endDate}',
-            xlabel= 'Date', ylabel= f'Number of {typePlot}',
-            color=['red', 'blue'], 
-            figsize=(15,8),
-            ylim=ylim)
-    plt.show()    
-
