@@ -37,19 +37,23 @@ This method includes running the model over historical data t0 (December, 2020) 
 
 ### Quick Start
 
+WORK IN PROGRESS....
+
 1. Clone repo
 
-2. SPin up localedb...or add own and format
+2. install reqs.txt
 
-3. Go to procedure of choice
+3. SPin up localedb...or add own and format
 
-4. Update creds
+4. Go to procedure of choice
 
-5. Update params
+5. Update creds
 
-6. run it
+6. Update params
 
-7 Docker...
+7. run it
+
+8. Docker...
 
 ### Output Description
 1. descr 
