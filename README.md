@@ -54,7 +54,7 @@ This method includes running the model over historical data t0 (December, 2020) 
 2. Plot it if desired
 
 ### License
-1. SEIRS Model Description at https://github.com/ryansmcgee/seirsplus/wiki/SEIRS-Model-Description under the MIT License.
+1. SEIRS Model MIT License information is [HERE](https://github.com/ryansmcgee/seirsplus/blob/master/LICENSE).
 
 
 ### Appendix
