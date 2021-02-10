@@ -1,6 +1,15 @@
 # Enhanced SEIRS+ 
 ## E-SEIRS+: A Generalized Infectious Disease Model
 
+## Contents
+1. [Objective](#objective)
+2. [Background](#background)
+3. [Further Reading](#further-reading)
+4. [Quick Start](#quick-start)
+5. [Output Description](#output-description)
+6. [License](#license)
+7. [Appendix](#appendix)
+
 
 ### Objective
 Re-engineer an existing open source epidemiological model to simplify input parameter value selection for general modelers while maintaining model efficacy. Automate verification, validation, uncertainty quantification, and sensitivity analysis of the model by leveraging LocaleDB, a database of global locales to support modeling and simulation in epidemiology with the current focus on the COVID 19 pandemic.
@@ -24,11 +33,29 @@ This method includes running the model over historical data t0 (December, 2020) 
 
 For further discussion, see the google doc at [HERE](https://docs.google.com/document/d/1fgOCZBjfO7Yw3_f-yHGdOtLBg1hmeMWYVFY_zqTYwW4/edit?usp=sharing)
 
-### Citation
+### Quick Start
+
+1. Clone repo
+
+2. SPin up localedb...or add own and format
+
+3. Go to procedure of choice
+
+4. Update creds
+
+5. Update params
+
+6. run it
+
+### Output Description
+1. descr 
+2. Plot it if desired
+
+### License
 1. SEIRS Model Description at https://github.com/ryansmcgee/seirsplus/wiki/SEIRS-Model-Description under the MIT License.
 
 
-### Appendix A
+### Appendix
 | Parameter | Parameter Description                                    |
 | --------- | -------------------------------------------------------- |
 | sigma     | Rate of progression: reciprocal of incubation period     |
