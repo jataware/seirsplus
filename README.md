@@ -75,17 +75,18 @@ Name your BYOD file as `history.csv` and save to the `~/data/` folcer
 
 Steps on how to run the `Ethiopia Procedure`. There is also an example for the State of Oregon (`seirsplus/procedures/OR/`). Should you wish to run E-SEIRS for a different location; the steps are the same, but you need to update the `ET/inputs/model_parameters.json` file with your locations' parameter values.
 
-x. run `git clone git@github.com:jataware/seirsplus.git`
+1. run `git clone git@github.com:jataware/seirsplus.git`
 
-x. run `cd ~seirsplus`
+2. run `cd ~seirsplus`
 
-x. run `pip install -r requirements.txt`
+3. run `pip install -r requirements.txt`
 
-x. run `cd ~seirsplus/procedures/ET/inputs`
+4. run `cd ~seirsplus/procedures/ET/inputs`
 
-x. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
+5. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
 
-x. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
+6. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
+
 NOTE: for a location of your choosing, all values will need to be updated. See the Apendix or Further Reading for detailed descriptions of the parameters.
 
 Example `model_parameters.json`:
@@ -97,9 +98,9 @@ Example `model_parameters.json`:
 | "Parameter Point Estimates" | Point estimate (ex: "initn": 114963588 which is the total population for Ethiopia)|
 | "DOE Parameter Ranges" | Range of reasonable parameter values (ex: "r0": [0.8, 3.0, 1] where 0.8=low estimate, 3.0=High estimate, 1= number of decimals desired |
 
-x. run `cd ~seirsplus/procedures/ET/`
+7. run `cd ~seirsplus/procedures/ET/`
 
-x. run `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
+8. run `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
   
   - startDate= Date to start training the model 
   
