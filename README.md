@@ -31,7 +31,9 @@ SEIRS+ requires twenty two input parameters (Appendix A). With such a high numbe
 
 This method includes running the model over historical data t0 (December, 2020) and minimizing the mean-squared error of predicted cases and deaths versus actual cases and deaths by varying parameters within a given generally accepted range. Then, with the best parameter values from the first step, the model is used to predict cases and deaths in an additional, historic time interval t1 (January, 2021). Specifically, below is the backcasting process we implemented:
 
-For further discussion, see the google doc at [HERE](https://docs.google.com/document/d/1fgOCZBjfO7Yw3_f-yHGdOtLBg1hmeMWYVFY_zqTYwW4/edit?usp=sharing)
+### Further Reading:
+- For further discussion of this implementation, see the google doc at [HERE](https://docs.google.com/document/d/1fgOCZBjfO7Yw3_f-yHGdOtLBg1hmeMWYVFY_zqTYwW4/edit?usp=sharing)
+- The original SEIRS+ repository is [HERE](https://github.com/ryansmcgee/seirsplus)
 
 ### Quick Start
 
