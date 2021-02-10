@@ -23,7 +23,7 @@ import scipy.integrate
 
 '''
 
-# OREGON RUN
+# CLI RUN:
 
 python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=30
 
