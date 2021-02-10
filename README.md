@@ -49,6 +49,8 @@ This method includes running the model over historical data t0 (December, 2020) 
 
 6. run it
 
+7 Docker...
+
 ### Output Description
 1. descr 
 2. Plot it if desired
