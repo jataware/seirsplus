@@ -30,7 +30,6 @@ SEIRS+ requires eleven input parameters that are described in the [Appendix](#ap
 
 CLI Example: `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
 
-
 1. Read in modeler model parameters
 
 For training data (ex: -startDate=2020-11-01 -endDate=2020-11-30): 
@@ -70,18 +69,18 @@ Steps on how to run the `Ethiopia Procedure`. There is also an example for the S
 
 x. run `git clone git@github.com:jataware/seirsplus.git`
 
-x. run `cd seirsplus`
+x. run `cd ~seirsplus`
 
 x. run `pip install -r requirements.txt`
 
-x. run `cd seirsplus/procedures/ET/inputs`
+x. run `cd ~seirsplus/procedures/ET/inputs`
 
 x. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
 
 x. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
 NOTE: for a location of your choosing, all values will need to be updated. See the Apendix or Further Reading for detailed descriptions of the parameters.
 
-Example `model_parameters.json` for Ethiopia:
+Example `model_parameters.json`:
 
 | Key                                            | Description                                                                                            |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -90,15 +89,32 @@ Example `model_parameters.json` for Ethiopia:
 | "Parameter Point Estimates" | Point estimate (ex: "initn": 114963588 which is the total population for Ethiopia)|
 | "DOE Parameter Ranges" | Range of reasonable parameter values (ex: "r0": [0.8, 3.0, 1] where 0.8=low estimate, 3.0=High estimate, 1= number of decimals desired |
 
-x. Update params
+x. run `cd ~seirsplus/procedures/ET/`
 
-x. run it
-
-x. Docker...
+x. run `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
+  
+  - startDate= Date to start training the model 
+  
+  - endDate= Date to stop training the model
+  
+  - simDays= Number of days to run prediction using parameters tuned from historical data between the startDate and endDate
 
 ### Output Description
-1. descr 
-2. Plot it if desired
+1. run `cd seirsplus/procedures/ET/results/`
+2. The model results are written to `predictionResults.csv`
+3. There are two versions of `predictionResults.csv`:
+
+  - If historical data is available for your prediction time period, the following headers are included:
+  
+  `timestamp,admin0,actualCases,predictedCases,actualFatalities,predictedFatalities`
+  
+  - If your prediction time period extends beyond the available historical data, the following headers are included (no `actual` columns):
+  
+  `timestamp,admin0,predictedCases,predictedFatalities`
+
+4. To explore your results, there is a jupyter notebook at: `~seirsplus/notebooks/`
+5. Open `plotResults.ipynb`, update the file path to your `predictionResults.csv` file, and run the plot cells to visualize the model results.
+
 
 ### License
 1. SEIRS Model MIT License information is [HERE](https://github.com/ryansmcgee/seirsplus/blob/master/LICENSE).
