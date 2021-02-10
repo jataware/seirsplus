@@ -37,23 +37,33 @@ This method includes running the model over historical data t0 (December, 2020) 
 
 ### Quick Start
 
+#### Historical Data:
+Historical COVID data (case and fatalities counts) are pulled from Localedb.
+
+1. run `git clone git@github.com:momacs/localedb.git`
+2. run `cd localedb`
+3. run `./build-docker.sh`
+4. run `docker-compose up -d` This will take about 1 minute, 
+5. Wait until prior step completes, then initialize the database inside the container with, 
+ run `docker-compose run --rm localedb setup`
+6. run `docker-compose run --rm localedb load dis COVID-19` This will take several minutes to load all the disease data for all locales
+
+
 WORK IN PROGRESS....
 
-1. Clone repo
+x. Clone repo
 
-2. install reqs.txt
+x. install reqs.txt
 
-3. SPin up localedb...or add own and format
+x. Update localedb creds
 
-4. Go to procedure of choice
+x. Go to procedure of choice
 
-5. Update creds
+x. Update params
 
-6. Update params
+x. run it
 
-7. run it
-
-8. Docker...
+x. Docker...
 
 ### Output Description
 1. descr 
