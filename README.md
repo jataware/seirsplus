@@ -2,13 +2,14 @@
 ## E-SEIRS+: A Generalized Infectious Disease Model
 
 ## Contents
-1. [Objective](#objective)
-2. [Background](#background)
-3. [Further Reading](#further-reading)
-4. [Quick Start](#quick-start)
-5. [Output Description](#output-description)
-6. [License](#license)
-7. [Appendix](#appendix)
+- [Objective](#objective)
+- [Background](#background)
+- [Model Process](#model-process)
+- [Further Reading](#further-reading)
+- [Quick Start](#quick-start)
+- [Output Description](#output-description)
+- [License](#license)
+- [Appendix](#appendix)
 
 
 ### Objective
@@ -18,18 +19,32 @@ Re-engineer an existing open source epidemiological model to simplify input para
 ### Background
 At the December 2020 World Modeler Exercise our Ethiopian partners expressed a need for a COVID prediction model in CauseMos. This effort aims to meet that need by enhancing the SEIRS+ model with a method to predict model parameters with readily available data. Additionally, this effort aims to assess the extent to which the ASKE structured data project, LocaleDB, may be used to automate model assessment.
 
-This open source implementation of SEIR is a standard compartmental model in which the population is divided into susceptible (S), exposed (E), infectious (I), recovered (R) and fatality (F) individuals. See model description for more detail.
-  
+This open source implementation of SEIR is a standard compartmental model in which the population is divided into susceptible (S), exposed (E), infectious (I), recovered (R) and fatality (F) individuals. See[Further Reading](#further-reading) for more detail.
 
-The rates of transition between the states are given by the parameters:
-σ: rate of progression (inverse of incubation period)
-γ: rate of recovery (inverse of infectious period)
-ξ: rate of re-susceptibility (inverse of temporary immunity period; 0 if permanent immunity)
-μI: rate of mortality from the disease (deaths per infectious individual per time)
-Model Assessment
-SEIRS+ requires twenty two input parameters (Appendix A). With such a high number of parameters, accurately populating each, even for backcasting, is cumbersome and error-prone. To overcome this shortfall, we developed a two-stage model calibration method to select appropriate parameters for model assessment. For this assessment, we arbitrarily selected the State of Oregon, USA.
+## Model Process
+SEIRS+ requires eleven input parameters that are described in the [Appendix](#appendix). We developed a two-stage model calibration method to select appropriate parameters for model assessment.
 
-This method includes running the model over historical data t0 (December, 2020) and minimizing the mean-squared error of predicted cases and deaths versus actual cases and deaths by varying parameters within a given generally accepted range. Then, with the best parameter values from the first step, the model is used to predict cases and deaths in an additional, historic time interval t1 (January, 2021). Specifically, below is the backcasting process we implemented:
+<center>
+<img src="images/diagram.png" width="700">
+</center>
+
+CLI Example: `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
+
+
+1. Read in modeler model parameters
+
+For training data (ex: -startDate=2020-11-01 -endDate=2020-11-30): 
+
+2. Access localedb and download historical time series data for region of interest; data include disease case and fatality counts.
+3. With `Disease Params` ranges, build a Design of Experiments consisting of 17 design points.
+4. Instantiate model for each design point with input parameters from DOE and `Demographics` point estimates.
+5. Compare each model output to ground-truth historical data by computing the mean-squared error.
+
+Time horizon auto-incremented: (ex: -startDate=2020-12-01 -endDate=2020-12-31 [`startDate` + `simDays`]) 
+
+6. Pull the design point(s) that resulted in the min MSE for `cases` and `fatalities` respectively.
+7. Update the initial conditions (ground truth `case` and `fatality` count) for t(0) 
+8. Run model with new intial conditions and min(MSE) design point parameters.
 
 ### Further Reading:
 - For further discussion of this implementation, see the google doc at [HERE](https://docs.google.com/document/d/1fgOCZBjfO7Yw3_f-yHGdOtLBg1hmeMWYVFY_zqTYwW4/edit?usp=sharing)
@@ -49,15 +64,31 @@ Historical COVID data (case and fatalities counts) are pulled from Localedb.
 6. run `docker-compose run --rm localedb load dis COVID-19` This will take several minutes to load all the disease data for all locales
 
 
-WORK IN PROGRESS....
+#### Run E-SEIRS+ Model
 
-x. Clone repo
+Steps on how to run the `Ethiopia Procedure`. There is also an example for the State of Oregon (`seirsplus/procedures/OR/`). Should you wish to run E-SEIRS for a different location; the steps are the same, but you need to update the `ET/inputs/model_parameters.json` file with your locations' parameter values.
 
-x. install reqs.txt
+x. run `git clone git@github.com:jataware/seirsplus.git`
 
-x. Update localedb creds
+x. run `cd seirsplus`
 
-x. Go to procedure of choice
+x. run `pip install -r requirements.txt`
+
+x. run `cd seirsplus/procedures/ET/inputs`
+
+x. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
+
+x. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
+NOTE: for a location of your choosing, all values will need to be updated. See the Apendix or Further Reading for detailed descriptions of the parameters.
+
+Example `model_parameters.json` for Ethiopia:
+
+| Key                                            | Description                                                                                            |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| "ISO" | Two-Letter ISO CODE for country (ex: "ET" ; if for US State, two-letter state abbreviation (ex: "OR)|
+| "ADMIN" | Admin-level of your location (ex: "ET"::admin0, "OR"::"admin1" |
+| "Parameter Point Estimates" | Point estimate (ex: "initn": 114963588 which is the total population for Ethiopia)|
+| "DOE Parameter Ranges" | Range of reasonable parameter values (ex: "r0": [0.8, 3.0, 1] where 0.8=low estimate, 3.0=High estimate, 1= number of decimals desired |
 
 x. Update params
 
@@ -76,19 +107,16 @@ x. Docker...
 ### Appendix
 | Parameter | Parameter Description                                    |
 | --------- | -------------------------------------------------------- |
-| sigma     | Rate of progression: reciprocal of incubation period     |
+| sigma     | Rate of progression: inverse of incubation period     |
 | gamma     | Rate of recovery: inverse of infectious period           |
 | R0        | Contact infection                                        |
-| xi        | rate of re-susceptibility                                |
+| xi        | inverse of temporary immunity period; 0 if permanent immunity                                |
 | mu\_I     | rate of infection-related mortality                      |
 | mu\_0     | rate of baseline mortality                               |
 | nu        | rate of baseline birth                                   |
 | theta     | rate of testing of individuals                           |
-| psi\_E    | probability of positive tests for exposed individuals    |
-| psi\_I    | probability of positive tests for infectious individuals |
+| psi       | probability of positive tests for exposed individuals    |
 | initN     | initial total number of individuals                      |
-
-
 
 
 
