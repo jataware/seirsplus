@@ -71,7 +71,8 @@ try:
     df_hist.to_csv(f"{wrkDir}/data/history.csv")
     print("Localedb data written to '/data/history.csv'")
     
-except:
+except Exception as e: # work on python 3.x
+    print(f'Failed to upload to data: '+ str(e))    
     print("Unable to access historical data via localedb; please add a 'history.csv' to the 'data' folder in the prescribed format and re-run.")
 
     # READIN BACKUP Read in historical data
