@@ -29,12 +29,12 @@ SEIRS+ requires eleven input parameters that are described in the [Appendix](#ap
 
 CLI Example: `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
 
-1. Read in modeler model parameters
+1. Read in modeler input parameters
+2. Access localedb and download historical time series data for region of interest; data include disease case and fatality counts.
+3. With `Disease Params` ranges, build a Design of Experiments consisting of 17 design points.
 
 For training data (ex: -startDate=2020-11-01 -endDate=2020-11-30): 
 
-2. Access localedb and download historical time series data for region of interest; data include disease case and fatality counts.
-3. With `Disease Params` ranges, build a Design of Experiments consisting of 17 design points.
 4. Instantiate model for each design point with input parameters from DOE and `Demographics` point estimates.
 5. Compare each model output to ground-truth historical data by computing the mean-squared error.
 
@@ -61,6 +61,15 @@ Historical COVID data (case and fatalities counts) are pulled from Localedb.
  run `docker-compose run --rm localedb setup`
 6. run `docker-compose run --rm localedb load dis COVID-19` This will take several minutes to load all the disease data for all locales
 
+NOTE: If unable to access localedb, you can provide your own historical time series dataset. Inspect the `seirsplus/procedures/ET/data/history.csv` for proper format. The counts are cumalitive counts of cases and fatalities, not daily case/fatality counts.
+
+Required Column Headers: `date,state,positive,death` where:
+  - `date` = string in `YYYY-MM-DD` format
+  - `state` = string ISO2 code of your location
+  - `positive` = integer or float number of cumalitive cases
+  - `death` = integer or float number of cumalitive deaths
+
+Name your BYOD file as `history.csv` and save to the `~/data/` folcer
 
 #### Run E-SEIRS+ Model
 
