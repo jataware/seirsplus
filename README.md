@@ -53,6 +53,16 @@ Time horizon auto-incremented: (ex: -startDate=2020-12-01 -endDate=2020-12-31 [`
 #### Historical Data:
 Historical COVID data (case and fatalities counts) are pulled from Localedb.
 
+NOTE: If unable to access localedb, you can provide your own historical time series dataset. Inspect the `seirsplus/procedures/ET/data/history.csv` for proper format. The counts are cumulative counts of cases and fatalities, not daily case/fatality counts.
+
+Required Column Headers: `date,state,positive,death` where:
+  - `date` = string in `YYYY-MM-DD` format
+  - `state` = string ISO2 code of your location
+  - `positive` = integer or float number of cumalitive cases
+  - `death` = integer or float number of cumulative deaths
+
+Name your BYOD file as `history.csv` and save to the `~/data/` folder
+
 1. run `git clone git@github.com:momacs/localedb.git`
 2. run `cd localedb`
 3. run `./build-docker.sh`
@@ -61,17 +71,36 @@ Historical COVID data (case and fatalities counts) are pulled from Localedb.
  run `docker-compose run --rm localedb setup`
 6. run `docker-compose run --rm localedb load dis COVID-19` This will take several minutes to load all the disease data for all locales
 
-NOTE: If unable to access localedb, you can provide your own historical time series dataset. Inspect the `seirsplus/procedures/ET/data/history.csv` for proper format. The counts are cumalitive counts of cases and fatalities, not daily case/fatality counts.
+#### Run E-SIERS+ via published Docker Image:
 
-Required Column Headers: `date,state,positive,death` where:
-  - `date` = string in `YYYY-MM-DD` format
-  - `state` = string ISO2 code of your location
-  - `positive` = integer or float number of cumalitive cases
-  - `death` = integer or float number of cumalitive deaths
+1. Start localedb container as described above
+2. run `git clone git@github.com:jataware/seirsplus.git`
+3. run `cd seirsplus/procedures/ET/inputs`
+4. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
+5. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
 
-Name your BYOD file as `history.csv` and save to the `~/data/` folcer
+Note: Both the `credentials.json` and `model_parameters.json` files will be mounted to your Docker container. For a location of your choosing, all values in the `model_parameters.json` file will need to be updated. See the Apendix or Further Reading for detailed descriptions of the parameters.
 
-#### Run E-SEIRS+ Model
+ `model_parameters.json` Description:
+
+| Key                                            | Description                                                                                            |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| "ISO" | Two-Letter ISO CODE for country (ex: "ET" ; if for US State, two-letter state abbreviation (ex: "OR)|
+| "ADMIN" | Admin-level of your location (ex: "ET"::admin0, "OR"::"admin1" |
+| "Parameter Point Estimates" | Point estimate (ex: "initn": 114963588 which is the total population for Ethiopia)|
+| "DOE Parameter Ranges" | Range of reasonable parameter values (ex: "r0": [0.8, 3.0, 1] where 0.8=low estimate, 3.0=High estimate, 1= number of decimals desired |
+
+8. run `docker run -v $PWD/inputs:/seirsplus/procedures/ET/inputs -v $PWD/data:/seirsplus/procedures/ET/data -v $PWD/results:/seirsplus/procedures/ET/results --network="host" jataware/seirplus -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
+  
+  - startDate= Date to start training the model 
+  
+  - endDate= Date to stop training the model
+  
+  - simDays= Number of days to run prediction using parameters tuned from historical data between the startDate and endDate
+
+9. Model results will be on your local machine at `~/results/predictedResults.csv'
+
+#### Run local E-SEIRS+ Model
 
 Steps on how to run the `Ethiopia Procedure`. There is also an example for the State of Oregon (`seirsplus/procedures/OR/`). Should you wish to run E-SEIRS for a different location; the steps are the same, but you need to update the `ET/inputs/model_parameters.json` file with your locations' parameter values.
 
