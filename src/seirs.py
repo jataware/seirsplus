@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
 from sklearn.metrics import mean_squared_error
 from datetime import timedelta
 import scipy.integrate
@@ -17,7 +16,6 @@ import os
 from functions import *
 from models import *
 from pycube import *
-
 
 '''
 
