@@ -27,13 +27,13 @@ SEIRS+ requires eleven input parameters that are described in the [Appendix](#ap
 <img src="images/diagram.png" width="700">
 </center>
 
-CLI Example: `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
+CLI Example: `python3 seirs.py -iso2=ET -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
 
 1. Read in modeler input parameters
 2. Access localedb and download historical time series data for region of interest; data include disease case and fatality counts.
 3. With `Disease Params` ranges, build a Design of Experiments consisting of 17 design points.
 
-For training data (ex: -startDate=2020-11-01 -endDate=2020-11-30): 
+For training data (ex: -startDate=2020-11-01 -endDate=2020-11-30 for Ethiopia '-iso2=ET'): 
 
 4. Instantiate model for each design point with input parameters from DOE and `Demographics` point estimates.
 5. Compare each model output to ground-truth historical data by computing the mean-squared error.
@@ -51,37 +51,64 @@ Time horizon auto-incremented: (ex: -startDate=2020-12-01 -endDate=2020-12-31 [`
 ### Quick Start
 
 #### Historical Data:
-Historical COVID data (case and fatalities counts) are pulled from Localedb.
 
-NOTE: If unable to access localedb, you can provide your own historical time series dataset. Inspect the `seirsplus/procedures/ET/data/history.csv` for proper format. The counts are cumulative counts of cases and fatalities, not daily case/fatality counts.
+You can get you historical data by two methods:
 
-Required Column Headers: `date,state,positive,death` where:
-  - `date` = string in `YYYY-MM-DD` format
-  - `state` = string ISO2 code of your location
-  - `positive` = integer or float number of cumalitive cases
-  - `death` = integer or float number of cumulative deaths
+  1. localedb: a comprehensive database that provides, among other things, timely case and fatality disease counts
 
-Name your BYOD file as `history.csv` and save to the `~/data/` folder
+     - run `git clone git@github.com:momacs/localedb.git`
+  
+     - run `cd localedb`
+  
+     - run `./build-docker.sh`
+  
+     - run `docker-compose up -d` This will take about 1 minute
 
-1. run `git clone git@github.com:momacs/localedb.git`
-2. run `cd localedb`
-3. run `./build-docker.sh`
-4. run `docker-compose up -d` This will take about 1 minute, 
-5. Wait until prior step completes, then initialize the database inside the container with, 
- run `docker-compose run --rm localedb setup`
-6. run `docker-compose run --rm localedb load dis COVID-19` This will take several minutes to load all the disease data for all locales
+     - Wait until prior step completes, then initialize the database inside the container with, run `docker-compose run --rm localedb setup`
+
+     - run `docker-compose run --rm localedb load dis COVID-19` This will take several minutes to load all the disease data for all locales
+
+     - run `git clone git@github.com:jataware/seirsplus.git`
+  
+     - run `cd localedb`
+  
+     - run `python3 historical_data.py -username=<username> -password=<password> -iso2=ET` where `iso2` is the two-letter country code or US State abbreviation. You can request credentials by e-mailing me at: `travis'at'jataware.com`
+
+     - The required `history.csv` file will be written to `~/procedures/{iso2}/inputs/`
+
+  2. "Bring your own data": If you choose this option, see below for formatting requirements.
+
+     - Inspect the `seirsplus/procedures/ET/data/history.csv` for proper format. 
+  
+     - The counts are cumulative counts of cases and fatalities, not daily case/fatality counts.
+
+     - Required Column Headers: `date,state,positive,death` where:
+       - `date` = string in `YYYY-MM-DD` format
+       - `state` = string ISO2 code of your location
+       - `positive` = integer or float number of cumalitive cases
+       - `death` = integer or float number of cumulative deaths
+
+  d. Name your BYOD file as `history.csv` and save to the `~procedures/{iso2}/inputs/` folder
+
 
 #### Run E-SIERS+ via published Docker Image:
 
-1. Start localedb container as described above
-2. run `git clone git@github.com:jataware/seirsplus.git`
+For a location of your choosing, after cloning the repository (see Ethiopia Example below):
+
+1. Copy the `~ET/` directory and paste into same directory (`procedures`)
+2. Rename folder to `<your iso2>`
+3. run `cd <your iso2>`
+3. Update all values in the `model_parameters.json` as discussed below for the Ethiopia example. 
+
+Ehiopia Example:
+
+1. run `git clone git@github.com:jataware/seirsplus.git`
 3. run `cd seirsplus/procedures/ET/inputs`
-4. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
-5. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
+4. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
 
-Note: Both the `credentials.json` and `model_parameters.json` files will be mounted to your Docker container. For a location of your choosing, all values in the `model_parameters.json` file will need to be updated. See the Apendix or Further Reading for detailed descriptions of the parameters.
+Note: The`model_parameters.json` files will be mounted to your Docker container. See the Apendix or Further Reading for detailed descriptions of the parameters.
 
- `model_parameters.json` Description:
+ Description of `model_parameters.json` :
 
 | Key                                            | Description                                                                                            |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -90,7 +117,16 @@ Note: Both the `credentials.json` and `model_parameters.json` files will be moun
 | "Parameter Point Estimates" | Point estimate (ex: "initn": 114963588 which is the total population for Ethiopia)|
 | "DOE Parameter Ranges" | Range of reasonable parameter values (ex: "r0": [0.8, 3.0, 1] where 0.8=low estimate, 3.0=High estimate, 1= number of decimals desired |
 
-8. run `docker run -v $PWD/inputs:/seirsplus/procedures/ET/inputs -v $PWD/data:/seirsplus/procedures/ET/data -v $PWD/results:/seirsplus/procedures/ET/results --network="host" jataware/seirplus -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
+5. Return to the top directory (`seirsplus`)
+6. run 
+
+`docker run -v $PWD/procedures/ET/inputs:/seirsplus/procedures/ET/inputs 
+            -v $PWD/procedures/ET/results:/seirsplus/procedures/ET/results 
+            jataware/seirsplus -iso2=ET -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
+            
+ where:
+  
+  - iso2= Two-letter country code or US State abbreviation
   
   - startDate= Date to start training the model 
   
@@ -98,7 +134,7 @@ Note: Both the `credentials.json` and `model_parameters.json` files will be moun
   
   - simDays= Number of days to run prediction using parameters tuned from historical data between the startDate and endDate
 
-9. Model results will be on your local machine at `~/results/predictedResults.csv'
+7. Model results will be on your local machine at `~/procedures/{iso2}/inputspredictedResults.csv`
 
 #### Run local E-SEIRS+ Model
 
@@ -112,7 +148,7 @@ Steps on how to run the `Ethiopia Procedure`. There is also an example for the S
 
 4. run `cd ~seirsplus/procedures/ET/inputs`
 
-5. Open the `credentials.json` file and update the username and password. You can request credentials by e-mailing me at: `travis'at'jataware.com`
+5. Run localedb or bring your own historical data; see `Historical Data` section above for instructions.
 
 6. Open the `model_parameters.json` file. The pre-populated values are estimates from November 2020; make any needed adjustments based on new information. 
 
@@ -129,7 +165,9 @@ Example `model_parameters.json`:
 
 7. run `cd ~seirsplus/procedures/ET/`
 
-8. run `python3 seirs.py -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
+8. run `python3 seirs.py -iso2=ET -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31` where:
+  
+  - iso2= Two-letter country code or US State abbreviation
   
   - startDate= Date to start training the model 
   
@@ -151,7 +189,7 @@ Example `model_parameters.json`:
   `timestamp,admin0,predictedCases,predictedFatalities`
 
 4. To explore your results, there is a jupyter notebook at: `~seirsplus/notebooks/`
-5. Open `plotResults.ipynb`, update the file path to your `predictionResults.csv` file, and run the plot cells to visualize the model results.
+5. Open `plotResults.ipynb`, update the file path to your `predictionResults.csv` file, and run the cells to visualize the model results.
 
 
 ### License
@@ -164,7 +202,7 @@ Example `model_parameters.json`:
 | sigma     | Rate of progression: inverse of incubation period     |
 | gamma     | Rate of recovery: inverse of infectious period           |
 | R0        | Contact infection                                        |
-| xi        | inverse of temporary immunity period; 0 if permanent immunity                                |
+| xi        | inverse of temporary immunity period; 0 if permanent immunity|
 | mu\_I     | rate of infection-related mortality                      |
 | mu\_0     | rate of baseline mortality                               |
 | nu        | rate of baseline birth                                   |
