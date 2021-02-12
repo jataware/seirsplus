@@ -88,7 +88,7 @@ You can get you historical data by two methods:
        - `positive` = integer or float number of cumalitive cases
        - `death` = integer or float number of cumulative deaths
 
-  d. Name your BYOD file as `history.csv` and save to the `~procedures/{iso2}/inputs/` folder
+     - Name your BYOD file as `history.csv` and save to the `~procedures/{iso2}/inputs/` folder
 
 
 #### Run E-SIERS+ via published Docker Image:
