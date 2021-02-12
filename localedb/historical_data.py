@@ -11,7 +11,7 @@ import os
 
 '''
 
-python3 historical_data.py -username=postgres -password=sa -iso2=ET
+python3 historical_data.py -username=<username> -password=<pwd> -iso2=ET
 
 '''
 
