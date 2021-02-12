@@ -120,10 +120,10 @@ Note: The`model_parameters.json` files will be mounted to your Docker container.
 5. Return to the top directory (`seirsplus`)
 6. run 
 
-`docker run -v $PWD/procedures/ET/inputs:/seirsplus/procedures/ET/inputs 
-            -v $PWD/procedures/ET/results:/seirsplus/procedures/ET/results 
-            jataware/seirsplus -iso2=ET -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31`
-            
+```
+docker run -v $PWD/procedures/ET/inputs:/seirsplus/procedures/ET/inputs -v $PWD/procedures/ET/results:/seirsplus/procedures/ET/results jataware/seirsplus -iso2=ET -startDate=2020-11-01 -endDate=2020-11-30 -simDays=31           
+```
+
  where:
   
   - iso2= Two-letter country code or US State abbreviation
