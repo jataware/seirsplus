@@ -71,6 +71,8 @@ You can get you historical data by two methods:
      - run `git clone git@github.com:jataware/seirsplus.git`
   
      - run `cd localedb`
+     
+     - run `pip3 install -r requirements.txt`
   
      - run `python3 historical_data.py -username=<username> -password=<password> -iso2=ET` where `iso2` is the two-letter country code or US State abbreviation. You can request credentials by e-mailing me at: `travis'at'jataware.com`
 
